@@ -8,7 +8,8 @@ jobs:
       image: ubuntu-1604:201903-01
     steps:
       - checkout
-      - matlab/install
+      - matlab/install:
+          release: R2021a
       - matlab/run-tests:
           test-results-junit: artifacts/test_results/matlab/results.xml
           # Have to add test/tools to the path for certain tests.
