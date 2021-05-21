@@ -8,6 +8,7 @@ Requirements
 - MATLAB&reg; R2021a or later
 - Deep Learning Toolbox&trade;
 - Computer Vision Toolbox&trade;
+- Deep Learning Toolbox Converter for ONNX Model Format&trade; Support Package
 
 Overview
 --------
