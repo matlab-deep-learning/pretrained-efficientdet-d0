@@ -21,7 +21,6 @@ classdef DownloadEfficientDetD0Fixture < matlab.unittest.fixtures.Fixture
             % Call this in eval to capture and drop any standard output
             % that we don't want polluting the test logs.
             if ~this.EfficientDetExist
-                ver
             	evalc('helper.downloadPretrainedEfficientDetD0();');
             end       
         end
