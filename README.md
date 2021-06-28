@@ -1,4 +1,4 @@
-# Pretrained EfficientDet-D0 Network For Object Detection
+# Pretrained EfficientDet Network For Object Detection
 
 This repository provides a pretrained EfficientDet-D0[1] object detection network for MATLAB&reg;. 
 
