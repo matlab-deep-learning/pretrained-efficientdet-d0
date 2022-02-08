@@ -25,7 +25,8 @@ net = model.net;
 unzip vehicleDatasetImages.zip
 data = load('vehicleDatasetGroundTruth.mat');
 vehicleDataset = data.vehicleDataset;
-
+% Specify classnames.
+classNames = {'vehicle'};
 % Add the full path to the local vehicle data folder.
 vehicleDataset.imageFilename = fullfile(pwd, vehicleDataset.imageFilename);
 
@@ -128,8 +129,7 @@ reset(preprocessedTrainingData);
 % and generate the anchor boxes using 'generateAnchorBox' function. Then, modify 
 % the pretrained netowork's output layers using configureEfficientDetD0 function.
 
-% Specify classnames.
-classNames = {'vehicle'};
+
 numClasses = size(classNames, 2);
 
 % Add 'background' class to the existing class names.
@@ -161,7 +161,7 @@ warmupPeriod = 1000;
 l2Regularization = 0.0005;
 penaltyThreshold = 0.5;
 velocity = [];
-
+verboseFreq = 50;
 %% Train Model
 % Train on a GPU, if one is available. Using a GPU requires Parallel Computing 
 % Toolbox™ and a CUDA® enabled NVIDIA® GPU.
@@ -221,7 +221,7 @@ mbqTrain = minibatchqueue(preprocessedTrainingData, 3, "MiniBatchFormat", ["SSCB
 %
 % The training can also be terminated if the loss has saturated for few epochs. 
 rng('default');
-modelName = "trainedNet";
+modelName = "trainedEfficientDet-D0";
 
 start = tic;
 
@@ -260,7 +260,7 @@ for epoch = 1:numEpochs
         net.State = state;
         
         % Display progress.
-        if mod(iteration,10) == 1
+        if mod(iteration,verboseFreq) == 1
             helper.displayLossInfo(epoch, iteration, currentLR, lossInfo);
         end
         
@@ -301,7 +301,7 @@ results = table('Size', [0 3], ...
 
 T = table('Size', [0 1], ...
     'VariableTypes', {'cell'}, ...
-    'VariableNames', {'vehicle'});
+    'VariableNames', classNames(1:end-1));
 
 reset(testData)
 while hasdata(testData)
@@ -370,14 +370,10 @@ if ~isempty(scores)
 else
     Iout = im2uint8(I);
 end
-figure
-imshow(Iout)
-
-
+figure;imshow(Iout)
 %% References
 % [1] Mingxing Tan, Ruoming Pang, Quoc V. Le, “EfficientDet: Scalable and Efficient 
 % Object Detection.” Proceedings of the IEEE Conference on Computer Vision and 
 % Pattern Recognition (2020),  
-% 
 % 
 % Copyright 2021 The MathWorks, Inc.
